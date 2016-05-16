@@ -1,0 +1,143 @@
+﻿@using AmazonProductAdvertisingAPI.WebUI.Models
+@using AmazonProductAdvertisingAPI.WebUI.HtmlHelpers
+@model ProductListViewModel
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<link href="~/Content/table.css" rel="stylesheet" />
+<script src="~/Scripts/curencyMultiplier.js"></script>
+<script src="~/Scripts/preloadPage.js"></script>
+<script>
+    $(function () {
+        $(document).on('change', "#currencyRates", function () {
+            var selectedCurrency = $('select option:selected')[0];
+            var table = document.getElementById('t01');
+            var key = { "toCurrency": selectedCurrency.innerText };
+
+            var multiplier = getMultiplier(key);
+            
+            $("#t01 > tbody >tr > td:nth-child(2)").each(function () {
+                var number =parseInt($(this).context.getAttribute("value"));
+                var converted = (multiplier * number).toFixed(2);
+                $(this).html(converted + " " + selectedCurrency.getAttribute("symbol"));
+            });
+        });
+    });  
+</script>
+
+<script type="text/javascript">
+    var preloadedPages = {};
+    $().ready(function () {
+        currentPage = parseInt(getURLParameter('page'));
+        preloadedPages[currentPage] = document.documentElement.innerHTML;
+
+      
+        preloadPage(currentPage + 1, function (result, pageNumber) {
+            preloadedPages[pageNumber] = result;
+        });
+    });
+
+    function addPreloadPageToList(result, pageNumber) {
+        preloadedPages[pageNumber] = result
+    }
+</script>
+
+<script type="text/javascript">
+    $().ready(function () {
+       previouslyClicked = $(".btn").eq(0); //Assuming first tab is selected by default
+
+       $(".btn").click(function () {
+            previouslyClicked.removeClass("btn-default btn-primary selected").addClass("btn-default");
+            $(this).addClass("btn-default btn-primary selected");
+            previouslyClicked = $(this);
+
+            var requestedPage = parseInt(($(this).context.getAttribute("href")).replace("/Product/List/?page=", ""));
+            currentPage = parseInt(getURLParameter('page'));
+
+            previousPage = currentPage - 1;
+            nextPage = currentPage + 1;
+            alert($(this));
+            if (preloadedPages[requestedPage] != null) {
+                event.preventDefault();
+
+                var preloadedPage = document.createElement('div');
+                preloadedPage.innerHTML = preloadedPages[requestedPage];
+
+                var table = preloadedPage.getElementsByTagName('table').t01;;
+
+                $('#t01').html(table).html(); //replacement
+                history.pushState('', 'New Page Title', '/List/Product/?page=' + requestedPage);
+                if (preloadedPages[requestedPage+1] == null) {
+                    //preloadedPages[requestedPage + 1] = preloadPage(requestedPage + 1);
+
+                    
+                    var nextPage = requestedPage + 1;
+                    preloadPage(nextPage, function (result, pageNumber) {
+                        preloadedPages[pageNumber] = result;
+                    });
+                    
+                }
+            }
+        });
+    });
+
+</script>
+    
+<script>
+    function getURLParameter(name) {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [, ""])[1].replace(/\+/g, '%20')) || null;
+    }
+</script>
+
+
+
+
+<div id="page">
+    @using (Html.BeginForm("List", "Product", new { page = 1}))
+    {
+        @Html.TextBox("search")
+        <input type="submit" value="Search" />
+    }
+    <select name="currencyRates" id="currencyRates">
+        <option symbol="$">USD</option>
+        <option symbol="£">GBP</option>
+        <option symbol="$">CAD</option>
+        <option symbol="€">EUR</option>
+        <option symbol="₴">UAH</option>
+        <option symbol="$">MXN</option>
+        <option symbol="RL">TRY</option>
+        <option symbol="руб">RUB</option>
+        <option symbol="R$">BRL</option>
+        <option symbol="$">AUD</option>
+        <option symbol="Rs">INR</option>
+        <option symbol="¥">JPY</option>
+        <option symbol="Rp">IDR</option>
+    </select>
+    <div>
+        <table id="t01">
+            <colgroup>
+                <col>
+                <col width="150">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th colspan="2">Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in @Model.Products)
+                {
+                    <tr>
+                        <td>@p.Title</td>
+                        <td id="price" value="@p.Price">@p.Price.ToString("##.## $")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div>
+        @Html.PageLinks(Model.PagingInfo, x => Url.Action("List", new { page = x }))
+    </div>
+</div>
+

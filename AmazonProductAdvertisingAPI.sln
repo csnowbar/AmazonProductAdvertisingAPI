@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonProductAdvertisingAPI.Domain", "AmazonProductAdvertisingAPI.Domain\AmazonProductAdvertisingAPI.Domain.csproj", "{0154D1DB-683D-4B32-9B09-DA2F9188383C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonProductAdvertisingAPI.WebUI", "AmazonProductAdvertisingAPI.WebUI\AmazonProductAdvertisingAPI.WebUI.csproj", "{5FB18CF0-A1CC-43DB-98BE-ADE8478236AF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0154D1DB-683D-4B32-9B09-DA2F9188383C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0154D1DB-683D-4B32-9B09-DA2F9188383C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0154D1DB-683D-4B32-9B09-DA2F9188383C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0154D1DB-683D-4B32-9B09-DA2F9188383C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FB18CF0-A1CC-43DB-98BE-ADE8478236AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FB18CF0-A1CC-43DB-98BE-ADE8478236AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FB18CF0-A1CC-43DB-98BE-ADE8478236AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FB18CF0-A1CC-43DB-98BE-ADE8478236AF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
